@@ -80,7 +80,7 @@ SO THAT that I can eat good food with fun people and not alone.
  <!-- TODO: Update -->
 
 - Live URL: []()
-- Github Repository: []()
+- Github Repository: [https://github.com/AveryCaldwell/TasteBuds](https://github.com/AveryCaldwell/TasteBuds)
 
 <br>
 <hr>
