@@ -80,7 +80,7 @@ SO THAT that I can eat good food with fun people and not alone.
 
 - Live URL: [https://taste-buds.herokuapp.com/](https://taste-buds.herokuapp.com/)
 - Github Repository: [https://github.com/AveryCaldwell/TasteBuds](https://github.com/AveryCaldwell/TasteBuds)
-- Portfolio: [https://averycaldwell.github.io/React-Portfolio/](https://averycaldwell.github.io/React-Portfolio/)
+- Portfolio: [https://github.com/AveryCaldwell/TasteBuds?organization=AveryCaldwell&organization=AveryCaldwell](https://github.com/AveryCaldwell/TasteBuds?organization=AveryCaldwell&organization=AveryCaldwell)
 
 <br>
 <hr>
