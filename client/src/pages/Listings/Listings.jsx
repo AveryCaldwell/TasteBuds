@@ -22,7 +22,7 @@ function Listings({ client }) {
         <section className='m-4 mx-auto w-full flex flex-col justify-center'>
             <h1
                 // TODO: add max width
-                className='text-center p-5  my-4 mt-10 mb-10 text-pink font-bowlby  text-lg
+                className='text-center p-5  my-4 mt-10 mb-10 text-pink font-bowlby  text-lg 
                 xl:text-4xl xl:py-2 m-4 '
             >
                 Welcome {data ? userData.data.username : 'Foodie'}!
@@ -30,7 +30,7 @@ function Listings({ client }) {
             <div className='z-10'>
                 <CreateModal source={'listing'} client={client} />
             </div>
-            <div className='sm:m-4 flex flex-col items-center'>
+            <div className='sm:m-4 mx-auto flex flex-col items-center'>
                 {data ? (
                     data.getAllPosts.map((post) => (
                         <EventCard
@@ -46,13 +46,7 @@ function Listings({ client }) {
                     <br />
                 )}
 
-                {/* {loading ? (
-                    <h1> Loading posts</h1>
-                    ) : (
-                        <EventCard posts={posts}/>
-                        ) 
-                    }
-                ;  */}
+
             </div>
         </section>
     );

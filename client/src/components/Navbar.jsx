@@ -9,6 +9,7 @@ import Logo from '../assets/logo-icon.png';
 import auth from '../utils/auth';
 
 const Navbar = ({ currentPage, handlePageChange }) => {
+
     // toggles navbar mobile menu
     const [toggleNavMenu, setToggleNavMenu] = useState(false);
 
@@ -25,14 +26,14 @@ const Navbar = ({ currentPage, handlePageChange }) => {
     return (
         <div
             className='w-full py-3 relative bg-coral
-                        lg:py-2 '
+                        lg:py-1 '
         >
             {/* // MONITORS */}
             <div className='hidden md:flex flex-row justify-between items-center px-4'>
                 <img
                     src={NavLogo}
                     alt='NavLogo'
-                    className='w-1/6 hidden lg:block  my-auto md:object-scale-down md:flex flex-row justify-between items-center px-4'
+                    className='w-1/5  hidden lg:block  md:object-scale-down md:flex flex-row justify-between items-center px-4'
                 />
                 <div className=''>
                     {/* ----------LOGO------- */}
@@ -41,62 +42,86 @@ const Navbar = ({ currentPage, handlePageChange }) => {
                     </p>
                 </div>
                 <ul className='flex items-center justify-end my-auto font-bowlby pr-4'>
+
+                    {/* "if logged in show these options in navbar" */}
                     {auth.loggedIn() ? (
                         <>
+                            {/* personal profile */}
                             <li
                                 className='text-2xl py-5  text-white pr-4
                             hover:text-orange duration-150'
                             >
                                 <Link to='/admin'>Profile</Link>
                             </li>
+
+                            {/* page of all events */}
                             <li
                                 className='text-2xl py-5 text-white pr-4
                             hover:text-orange duration-150'
                             >
                                 <Link to='/listings'>Listings</Link>
                             </li>
+
+                            {/* logout */}
                             <li
                                 className='text-2xl py-5  text-white pr-4
                             hover:text-orange duration-150'
                             >
+                                {/* when clicked run logout function in utils/logout */}
                                 <Link to='/' onClick={auth.logout}>
                                     Logout
                                 </Link>
                             </li>
                         </>
+                        // if not logged in then show these options (nothing)
                     ) : (
                         <></>
                     )}
                 </ul>
             </div>
-            {/* MOBILE */}
 
+            {/* ------------MOBILE------------ */}
             <div className='md:hidden flex flex-row justify-between items-center px-4 w-full'>
+
+                {/* if nav menu isn't toggled show tastebuds, if it is toggled hide tastebudes so navbar can cover screen */}
                 {toggleNavMenu ? (
                     ''
                 ) : (
                     <h1 className='text-white text-lg'>TasteBuds</h1>
                 )}
+
+                {/* if nav menu isn't toggled show hamburger menu, if it is toggled hide hamburger menu so navbar can cover screen */}
                 {toggleNavMenu ? (
                     ''
                 ) : (
+                    // hamburger menu, opens the navbar to colver the screen
                     <FaBars
                         className='text-white'
                         size={27}
                         onClick={() => setToggleNavMenu((prev) => !prev)}
                     />
                 )}
+
+                {/* MOBILE NAVBAR */}
                 {toggleNavMenu && (
                     <div className='flex flex-col w-full'>
+
+                        {/* Close button */}
                         <FaTimes
                             className='text-white  right-4'
                             size={27}
                             onClick={() => setToggleNavMenu((prev) => !prev)}
                         />
+
+                        {/* MENU */}
                         <div className='z-10 h-screen flex justify-center items-center'>
                             <div className='text-orange  sm:text-xl text-center w-full flex flex-col justify-center'>
+
+                                {/* if logged in, shows these nevbar options */}
                                 {auth.loggedIn() ? (
                                     <>
+
+                                    {/* Personal Profile */}
                                         <Link
                                             className='text-2xl py-5 font-manrope text-white
                                         hover:text-apricot duration-150'
@@ -109,6 +134,8 @@ const Navbar = ({ currentPage, handlePageChange }) => {
                                         >
                                             Profile
                                         </Link>
+
+                                        {/* Page of all events */}
                                         <Link
                                             className='text-2xl py-5 font-manrope text-white
                                         hover:text-orange duration-150'
@@ -121,6 +148,8 @@ const Navbar = ({ currentPage, handlePageChange }) => {
                                         >
                                             Listings
                                         </Link>
+
+                                        {/* Logout */}
                                         <Link
                                             className='text-2xl py-5 font-manrope text-white
                                         hover:text-apricot duration-150'
@@ -130,9 +159,13 @@ const Navbar = ({ currentPage, handlePageChange }) => {
                                             Logout
                                         </Link>
                                     </>
+
+                                    // If NOT logged in show signup/login modal
                                 ) : (
                                     <>
                                         <div className='flex flex-col justify-center mx-auto my-auto items-center gap-2'>
+
+                                            {/* Sign up */}
                                             <div className='flex justify-center'>
                                                 <button
                                                     onClick={toggleSignUpModal}
@@ -142,6 +175,8 @@ const Navbar = ({ currentPage, handlePageChange }) => {
                                                     Sign Up!
                                                 </button>
                                             </div>
+
+                                            {/* Login */}
                                             <div className='flex justify-center'>
                                                 <button
                                                     onClick={toggleLoginModal}
@@ -152,6 +187,8 @@ const Navbar = ({ currentPage, handlePageChange }) => {
                                                     Login
                                                 </button>
                                             </div>
+
+                                            {/* actual modals at bottom to not conflict inside of a div */}
                                             <SignUpModal
                                                 className=''
                                                 signUpModal={signUpModal}

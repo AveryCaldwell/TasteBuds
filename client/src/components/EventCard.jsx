@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { FaCheckSquare, FaCommentAlt } from 'react-icons/fa';
 import CommentInput from './CommentInput/CommentInput';
 import CommentCard from './CommentCard';
 import EditModal from './EditModal/EditModal';
@@ -7,7 +6,10 @@ import Auth from '../utils/auth';
 import { useMutation } from '@apollo/client';
 import { CREATE_COMMENT, DELETE_POST, UPDATE_POST } from '../utils/mutations';
 import { QUERY_ME, QUERY_POSTS } from '../utils/queries';
-// import CommentModal from './CommentModal/CommentModal'
+
+// ------------ CARD FOR SINGLE EVENT ------------ //
+
+// Lets other user's join the event
 const JoinEvent = ({
     client,
     buddies,
@@ -16,18 +18,25 @@ const JoinEvent = ({
     source,
     username,
 }) => {
-    // buddies = 1;
-    // buddylist = ['Fuck you'];
+
+    // Update event query
     const [post] = useMutation(UPDATE_POST);
+
+    // join event handler
     const handleJoinEvent = async () => {
         try {
+            // gets token from local storage and makes it a variable if logged in, if not - null
             const token = Auth.loggedIn() ? Auth.getToken() : null;
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const userData = Auth.getProfile();
-            //console.log(Date(updateValues.time));
+
             if (!token) {
                 return false;
             }
+
+            // defines buddly list as an array
             const buddylistUpdate = [...buddylist];
+            // adds username to the buddly list
             buddylistUpdate.push(userData.data.username);
             const { data } = await post({
                 variables: {
@@ -36,7 +45,7 @@ const JoinEvent = ({
                 },
             });
 
-            // console.log(data);
+            // refreshes components so new info shows
             if (source === 'admin') {
                 await client.refetchQueries({ include: [QUERY_ME] });
             } else if (source === 'listing') {
@@ -46,23 +55,28 @@ const JoinEvent = ({
             console.error(err);
         }
     };
+
+    // Unjoin event
     const handleUnJoinEvent = async () => {
         try {
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const token = Auth.loggedIn() ? Auth.getToken() : null;
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const userData = Auth.getProfile();
-            //console.log(Date(updateValues.time));
+
+            // if we get null from token return false
             if (!token) {
                 return false;
             }
+
+            // defines buddly list as an array
             let buddylistUpdate = [...buddylist];
+
+            // makes index of buddylistarray and cuts out the username of last joined
             let index = buddylistUpdate.indexOf(userData.data.username);
-            console.log(index);
-            console.log(buddylistUpdate);
-            // if (index === 0) {
-            //     buddylistUpdate = buddylistUpdate.shift();
-            // } else {
             buddylistUpdate = buddylistUpdate.splice(index - 1, 1);
-            // }
+
+            // updates the data
             const { data } = await post({
                 variables: {
                     postId: postId,
@@ -70,7 +84,7 @@ const JoinEvent = ({
                 },
             });
 
-            console.log(data);
+            // updates the components with the new data (the name taken off)
             if (source === 'admin') {
                 await client.refetchQueries({ include: [QUERY_ME] });
             } else if (source === 'listing') {
@@ -80,11 +94,14 @@ const JoinEvent = ({
             console.error(err);
         }
     };
+
     let maxDisabled = false;
 
+    // gets token from local storage and makes it a variable if logged in, if not - null
     const token = Auth.loggedIn() ? Auth.getToken() : null;
+    // uses getProfile function from Auth to turn logged in user's info into useable data
     const userData = Auth.getProfile();
-    //console.log(Date(updateValues.time));
+
     if (!token) {
         return false;
     }
@@ -165,6 +182,8 @@ const JoinEvent = ({
         );
     }
 };
+
+
 const EventCard = ({
     title,
     description,
@@ -178,16 +197,22 @@ const EventCard = ({
     buddies,
     buddylist,
 }) => {
-    // console.log(postId);
+
     // --------------- COMMENT VALUES AND INPUTS --------------- //
 
+    // defines create comment mutation as a variable, array
     const [comment] = useMutation(CREATE_COMMENT);
 
+    // gives values to inputs as blank, and lets us change it with late logic
     const [values, setValues] = useState({
         username: '',
         commentText: '',
     });
+
+    // turns logged in user's data into a useable variable
     const userData = Auth.getProfile();
+
+    // declares all input types and gives them label, name, etc. Puts in array to map later down the code
     const inputs = [
         {
             id: 2,
@@ -207,13 +232,16 @@ const EventCard = ({
     // ADD COMMENT
     const addComment = async () => {
         try {
+
+            // gets token from local storage and makes it a variable if logged in, if not - null
             const token = Auth.loggedIn() ? Auth.getToken() : null;
 
             if (!token) {
                 return false;
             }
+
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const userData = Auth.getProfile();
-            // console.log(Auth);
 
             const { data } = await comment({
                 variables: {
@@ -223,11 +251,11 @@ const EventCard = ({
                 },
             });
 
-            // console.log(data);
+            //   refreshes components/pages with the new data
             if (source === 'admin') {
                 await client.refetchQueries({ include: [QUERY_ME] });
             } else if (source === 'listing') {
-                // console.log('made it');
+
                 await client.refetchQueries({ include: [QUERY_POSTS] });
             }
         } catch (err) {
@@ -235,26 +263,30 @@ const EventCard = ({
         }
     };
 
+    // changes the values with new inputs
     const onChange = (e) => {
-        //console.log(e.target.value)
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
-    // DELETE POST
+//    delete post query mutator
     const [deletePost] = useMutation(DELETE_POST, {
         refetchQueries: [{ query: QUERY_ME }],
     });
+
+    // handles datetime to work with method
     function toDateTime(secs) {
         var t = new Date(parseInt(secs)); // Epoch
-        //t.setSeconds(parseInt(secs) / 1000);
         return t.toLocaleString();
     }
+
+     // DELETE POST
     const handleDelete = async (postId) => {
-        console.log(postId);
+        // console.log(postId);
         if (!postId) {
             console.log('postId is undefined');
             return;
         }
+
         deletePost({ variables: { postId: postId.toString() } });
         if (source === 'admin') {
             await client.refetchQueries({ include: [QUERY_ME] });
@@ -266,8 +298,8 @@ const EventCard = ({
 
     return (
         <div
-            className='flex flex-row items-center drop-shadow-lg w-full bg-apricot mt-10 my-4 rounded
-        sm:flex-col
+            className='flex flex-col items-center drop-shadow-lg w-full bg-apricot mt-10 my-4 rounded 
+       
         lg:max-w-[900px]
         xl:max-w-[1100px]'
         >
@@ -346,10 +378,10 @@ const EventCard = ({
                         />
                     ))}
                     {/* ---------------ADD COMMENT BUTTON ------------ */}
-                    <div className='hidden sm:flex flex-row justify-between'>
+                    <div className='hidden sm:flex flex-row justify-between '>
                         {/* TODO: edit padding under comment text area to make button closer to text box */}
                         <button
-                            className='mt-1 text-center rounded-lg bg-pink text-navnametext font-bowlby text-cream  w-[40%]  max-w-[180px] p-2 drop-shadow-md
+                            className=' text-center rounded-lg bg-pink text-navnametext font-bowlby text-cream  w-[40%]  max-w-[180px] p-2 drop-shadow-md
                        sm:w-[25%]
                        xl:text-2xl'
                             onClick={() => addComment()}
@@ -358,6 +390,7 @@ const EventCard = ({
                         </button>
 
                         {/* FUTURE DEVELOPMENT - LIKE BUTTON */}
+                        
                         {/* <div className='flex flex-row items-center justify-center gap-2 mt-4 ml-4 w-[22.5%] rounded bg-darkblue py-1 drop-shadow-md'>
                             <FaCheckSquare
                                 className=' text-hotpink'
@@ -382,7 +415,7 @@ const EventCard = ({
                 <div className='flex flex-row items-center justify-between'>
                     {userData.data.username === username ? (
                         <button
-                            className='mt-4 text-center rounded-lg bg-pink text-navnametext font-bowlby text-cream  w-[40%]  max-w-[180px] p-2 drop-shadow-md
+                            className='mt-4 mtext-center rounded-lg bg-pink text-navnametext font-bowlby text-cream  w-[40%]  max-w-[180px] p-2 drop-shadow-md
                        sm:w-[25%]
                        xl:text-2xl'
                             onClick={() => handleDelete(postId)}
@@ -419,7 +452,7 @@ const EventCard = ({
             {/* FIXME - match desktop styling */}
             <div className='flex flex-col mx-auto'>
                 {/* <div className='flex flex-row'> */}
-                <div className='w-[90%] flex sm:hidden flex-col font-manrope p-4'>
+                <div className='w-[90%] flex sm:hidden flex-col font-manrope p-4 mx-auto'>
                     <div className='bg-orange text-pink rounded-lg p-3'>
                         <h1
                             className='text-lg font-bold text-darkest 
@@ -475,7 +508,7 @@ const EventCard = ({
                         username={username}
                     />
                 </div>
-                <div className='flex sm:hidden flex-row justify-between my-2'>
+                <div className='flex mx-4 sm:hidden flex-row justify-between my-2'>
                     <button
                         className='mt-4 text-center rounded-lg bg-pink text-navnametext font-bowlby text-cream  w-[40%]  max-w-[180px] p-2 drop-shadow-md
                        sm:w-[25%]

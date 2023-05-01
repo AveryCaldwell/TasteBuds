@@ -33,25 +33,36 @@ const client = new ApolloClient({
 
 function App() {
     return (
-        // APP
+        
+        // manages GraphQL data within then React components
         <ApolloProvider client={client}>
+
             <Router>
                 <div className='w-screen h-[100%]'>
                     <div className='bg-white h-[100%]'>
+
                         <Navbar />
+
                         <Routes>
+                            {/* Login Page */}
                             <Route path='/' exact element={<Home />} />
+                            
+                            {/* Personal Profile */}
                             <Route
                                 path='/admin'
                                 element={<Admin client={client} />}
                             />
+                            
+                            {/* List of all events */}
                             <Route
                                 path='/listings'
                                 element={<Listings client={client} />}
                             />
                         </Routes>
                     </div>
+
                     <Footer />
+
                 </div>
             </Router>
         </ApolloProvider>

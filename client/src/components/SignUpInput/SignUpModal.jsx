@@ -4,7 +4,9 @@ import { useMutation } from '@apollo/client';
 import { NEW_USER } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 
+// takes props from page being passed through
 const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
+
     // --------------- SIGN UP VALUES AND INPUTS --------------- //
     const [userFormData, setUserFormData] = useState({
         username: '',
@@ -15,38 +17,45 @@ const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
     // define mutation for adding a user
     const [newUser, { error }] = useMutation(NEW_USER);
 
+    // handles changing the inputs from line 11
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setUserFormData({ ...userFormData, [name]: value });
     };
 
+    // 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        console.log('HANDLE FORM SUBMIT TRIGGERED');
-        // check if form has everything (as per react-bootstrap docs)
+
         const form = event.currentTarget;
+
+        // checks validity of inputs and makes sure they're entered and meets the requirements to proceed
         if (form.checkValidity() === false) {
+            // if false run:
             event.preventDefault();
             event.stopPropagation();
         }
 
+        // if inputs are valid, try to run newUser mutation function to make new user using userFormData
         try {
             const { data } = await newUser({
                 variables: { ...userFormData },
             });
-
+            // Login with newUser token 
             Auth.login(data.newUser.token);
-            console.log(data.newUser.token);
         } catch (err) {
             console.error(err);
         }
 
+        // resets inputs
         setUserFormData({
             username: '',
             email: '',
             password: '',
         });
     };
+
+    // inputs are entered into an array so we can map them later on a card
     const inputs = [
         {
             id: 1,
@@ -81,7 +90,7 @@ const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
         },
     ];
 
-    // --------------- SIGN UP METHODS --------------- //
+    // --------------- SIGN UP --------------- //
 
     return (
         <div className='w-full flex'>
@@ -103,7 +112,11 @@ const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
                                 >
                                     Sign Up!
                                 </h1>
+
+                                {/* SIGN UP FORM  */}
                                 <form className='' onSubmit={handleFormSubmit}>
+
+                                    {/* takes the input array defined in hook section and maps them out into a form */}
                                     {inputs.map((input) => (
                                         <SignUpInput
                                             key={input.id}
@@ -113,6 +126,8 @@ const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
                                         />
                                     ))}
                                     <div className='flex flex-row justify-center'>
+
+                                        {/* Submit button */}
                                         <button
                                             className='mt-4 mx-auto text-center rounded-lg bg-hotpink text-navnametext font-bowlby text-cream  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                           xl:text-2xl'
@@ -121,6 +136,8 @@ const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
                                         >
                                             Submit
                                         </button>
+
+                                        {/* Close button */}
                                         <button
                                             className='close-modal mt-4 mx-auto text-center rounded-lg bg-hotpink text-navnametext font-bowlby text-cream  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                        xl:text-2xl'
@@ -134,7 +151,6 @@ const SignUpModal = ({ signUpModal, toggleSignUpModal }) => {
                         </div>
                     </div>
                 </div>
-                // </div>
             )}
         </div>
     );

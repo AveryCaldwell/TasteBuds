@@ -6,13 +6,21 @@ import Auth from '../../utils/auth';
 import { QUERY_ME, QUERY_POSTS } from '../../utils/queries';
 
 const CreateModal = ({ client, source }) => {
+
+    // modal toggle function
     const [modal, setModal] = useState(false);
+
+    // post create variable connecting to create_post mutation
     const [post] = useMutation(CREATE_POST);
+
+    // toggleModal function
     const toggleModal = () => {
         setModal(!modal);
     };
 
     // --------------- EVENT VALUES AND INPUTS --------------- //
+
+    // Has values as blank but can be changed using useState
     const [values, setValues] = useState({
         title: '',
         description: '',
@@ -21,7 +29,10 @@ const CreateModal = ({ client, source }) => {
         buddies: 0,
     });
 
+    // Time useState variables for creating event
     const [postTime, setCreateTime] = useState();
+
+    // declares all input types and gives them label, name, etc. Puts in array to map later down the code
     const inputs = [
         {
             id: 2,
@@ -69,19 +80,25 @@ const CreateModal = ({ client, source }) => {
 
     // --------------- CREATE EVENT METHODS --------------- //
 
+    // handle submit on click
     const handleSubmit = (e) => {
         e.preventDefault();
     };
 
+    // changes the values based on the inputs given
     const onChange = (e) => {
-        // console.log(e.target.value)
         setValues({ ...values, [e.target.name]: e.target.value });
     };
+
+    // create event
     const handleCreatePost = async () => {
         try {
+            // gets token from local storage and makes it a variable if logged in, if not - null
             const token = Auth.loggedIn() ? Auth.getToken() : null;
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const userData = Auth.getProfile();
-            //console.log(userData);
+
+            // if we get null from token return false
             if (!token) {
                 return false;
             }
@@ -97,7 +114,7 @@ const CreateModal = ({ client, source }) => {
                 },
             });
 
-            //console.log(data);
+
             if (source === 'admin') {
                 await client.refetchQueries({ include: [QUERY_ME] });
                 toggleModal();
@@ -112,6 +129,8 @@ const CreateModal = ({ client, source }) => {
 
     return (
         <div className='w-full flex'>
+
+            {/* Modal toggle*/}
             <button
                 onClick={toggleModal}
                 className='
@@ -121,6 +140,7 @@ const CreateModal = ({ client, source }) => {
                 Create a New Event
             </button>
 
+            {/* Modal */}
             {modal && (
                 <div
                     className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm
@@ -139,6 +159,8 @@ const CreateModal = ({ client, source }) => {
                                 >
                                     Create a new event!
                                 </h1>
+
+                                {/* Input form that maps out inputs tp create input component */}
                                 <form className='' onSubmit={handleSubmit}>
                                     {inputs.map((input) => (
                                         <CreateInput
@@ -149,7 +171,10 @@ const CreateModal = ({ client, source }) => {
                                             setCreateTime={setCreateTime}
                                         />
                                     ))}
+
                                     <div className='flex flex-row justify-center'>
+
+                                        {/* Submit button */}
                                         <button
                                             className='mt-4 mx-auto text-center rounded bg-orange text-navnametext font-bowlby text-hotred  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                            xl:text-2xl'
@@ -157,6 +182,8 @@ const CreateModal = ({ client, source }) => {
                                         >
                                             Submit
                                         </button>
+
+                                        {/* Close button */}
                                         <button
                                             className='close-modal mt-4 mx-auto text-center rounded bg-orange text-navnametext font-bowlby text-hotred  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                        xl:text-2xl'

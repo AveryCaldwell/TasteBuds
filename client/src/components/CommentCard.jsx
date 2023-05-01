@@ -12,8 +12,12 @@ const CommentCard = ({
     postId,
     commentId,
 }) => {
-    const [comment] = useMutation(DELETE_COMMENT);
-    const deleteComment = async () => {};
+
+    //  FUTURE DEVELOPMENT -- DELETE COMMENT BUTTON
+    // const [comment] = useMutation(DELETE_COMMENT);
+    // const deleteComment = async () => {};
+
+
     return (
         <div className='flex flex-col w-full m-4 bg-lightpink bg-opacity-50 drop-shadow-lg rounded p-4 font-manrope '>
             <p
@@ -32,7 +36,8 @@ const CommentCard = ({
                 >
                     - {username}
                 </p>
-                {/* DELETE COMMENT BUTTON */}
+
+                {/* FUTURE DEVELOPMENT -- DELETE COMMENT BUTTON */}
                 {/* <button
                     className='mt-4 text-center rounded-lg bg-darkblue text-navnametext font-bowlby text-hotpink  w-[30%]  max-w-[180px] p-2 drop-shadow-md
                        sm:w-[25%]

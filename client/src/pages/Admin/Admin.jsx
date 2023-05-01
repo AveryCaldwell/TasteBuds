@@ -10,15 +10,19 @@ import Auth from '../../utils/auth';
 import CreateInput from '../../components/CreateModal/CreateInput';
 
 const Admin = ({ client }) => {
-    const [modal, setModal] = useState(false);
 
-    const [post] = useMutation(CREATE_POST);
+    // Modal use state logic
+    const [modal, setModal] = useState(false);
     function toggleModal() {
-        console.log('fired');
         setModal(!modal);
     }
 
+    // defines create post mustation as a variable, array
+    const [post] = useMutation(CREATE_POST);
+
     // --------------- EVENT VALUES AND INPUTS --------------- //
+
+    // gives values to inputs as blank, and lets us change it with late logic
     const [values, setValues] = useState({
         username: '',
         title: '',
@@ -27,7 +31,10 @@ const Admin = ({ client }) => {
         location: '',
     });
 
+    // Time useState variables for creating event
     const [postTime, setCreateTime] = useState();
+
+    // declares all input types and gives them label, name, etc. Puts in array to map later down the code
     const inputs = [
         {
             id: 2,
@@ -67,22 +74,30 @@ const Admin = ({ client }) => {
 
     // --------------- CREATE EVENT METHODS --------------- //
 
+    // handle submit on click
     const handleSubmit = (e) => {
         e.preventDefault();
     };
 
+    // changes the values based on the inputs given
     const onChange = (e) => {
-        // console.log(e.target.value)
         setValues({ ...values, [e.target.name]: e.target.value });
     };
+
+    // create event
     const handleCreatePost = async () => {
         try {
+            // gets token from local storage and makes it a variable if logged in, if not - null
             const token = Auth.loggedIn() ? Auth.getToken() : null;
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const userData = Auth.getProfile();
-            // console.log(userData)
+
+            // if we get null from token return false
             if (!token) {
                 return false;
             }
+
+
             const { data } = await post({
                 variables: {
                     title: values.title,
@@ -97,10 +112,13 @@ const Admin = ({ client }) => {
         }
     };
 
+    // query's logged in user's data
     const { loading, data } = useQuery(QUERY_ME);
     if (data) {
         console.log('DATA: ', data.me);
     }
+
+    // gets token from local storage and makes it a variable if logged in, if not - null
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     if (!token) {
         return false;
@@ -109,18 +127,21 @@ const Admin = ({ client }) => {
     return (
         <section className='w-full  flex flex-col justify-center'>
             <div
-                className=' mx-auto my-4 p-10 rounded-full drop-shadow-lg max-w-[500px]  drop-shadow-lg
+                className=' mx-auto my-4 p-10 rounded-full max-w-[500px]  drop-shadow-lg 
             md:w-[80%]
-            xl:max-w-[1000px] '
+            xl:max-w-[1000px]'
             >
-                {/* FIXME maybe add a background color circle to make the name pop? with some transparency maybe */}
+                {/* TODO maybe add a background color circle to make the name pop? with some transparency maybe */}
                 <h1
                     className=' text-center font-bowlby text-2xl text-pink
                 xl:text-4xl xl:py-2'
                 >
+                    {/* Logged In Username */}
                     {data ? data.me.username : <br />}'s profile
                 </h1>
             </div>
+
+            {/* Create Modal at top */}
             <div className='z-10'>
                 <CreateModal
                     source={'admin'}
@@ -129,10 +150,15 @@ const Admin = ({ client }) => {
                     modal={modal}
                 />
             </div>
+
+            {/* List of all the user's personal events */}
             <div className='mx-auto'>
+                {/* if user has events, show this */}
                 {data ? (
+                    // takes user's posts and maps them
                     data.me.posts.map((post) => {
                         return (
+                            // passing all the props needed
                             <EventCard
                                 title={post.title}
                                 description={post.description}
@@ -148,27 +174,32 @@ const Admin = ({ client }) => {
                             />
                         );
                     })
+                    // if user doesn't have events show this (nothing)
                 ) : (
                     <br />
                 )}
             </div>
 
-            <div
+
+            {/* FUTURE DEVELOPMENT - Create modal button at bottom of list*/}
+
+
+            {/* <div
                 className='flex justify-end pr-4
           max-w-[600px]
           md:w-[80%] md:pr-0
           xl:max-w-[1000px]'
-            >
-                {/* FUTURE DEVELOPMENT */}
-                {/* <TbCalendarPlus
+            > */}
+
+            {/* <TbCalendarPlus
                     className='text-6xl text-hotpink mr-left bg-darkblue rounded-lg p-1  drop-shadow-lg md:right-0'
                     onClick={() => {
                         handleCreatePost();
                         toggleModal();
                     }}
                 /> */}
-            </div>
-            {modal && (
+            {/* </div> */}
+            {/* {modal && (
                 <div
                     className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm
             flex justify-center items-center w-full'
@@ -220,9 +251,8 @@ const Admin = ({ client }) => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </section>
     );
 };
-//{data.me.posts.map((posts)=>{<li>{posts.title}</li>})}
 export default Admin;

@@ -6,12 +6,14 @@ import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../../utils/mutations';
 
 const LoginModal = ({ loginModal, toggleLoginModal }) => {
+
     // --------------- LOGIN VALUES AND INPUTS --------------- //
     const [userFormData, setUserFormData] = useState({
         username: '',
         password: '',
     });
 
+    // inputs are entered into an array so we can map them later on a card
     const inputs = [
         {
             id: 1,
@@ -31,40 +33,50 @@ const LoginModal = ({ loginModal, toggleLoginModal }) => {
         },
     ];
 
+    // defines login mutation for logging in
     const [login] = useMutation(LOGIN_USER);
 
-    // --------------- SIGN UP METHODS --------------- //
+    // --------------- LOGIN METHODS --------------- //
+
+    // handles changing the inputs from line 11
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setUserFormData({ ...userFormData, [name]: value });
     };
+
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         setUserFormData(event.target.username.value);
 
-        // check if form has everything (as per react-bootstrap docs)
+
         const form = event.currentTarget;
+
+        // checks validity of inputs and makes sure they're entered and meets the requirements to proceed
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
         }
 
         try {
-            console.log('userFormData: ', userFormData);
+            // console.log('userFormData: ', userFormData);
+
+            // if inputs are valid, try to run login using userFormData, also navigates to listings page
             const { data } = await login({
                 variables: { ...userFormData },
             });
 
             console.log(data);
 
+            // makes token from auth
             Auth.login(data.login.token);
         } catch (err) {
             console.error(err);
         }
 
+        // resets inputs
         setUserFormData({
             username: '',
-            // email: '',
             password: '',
         });
     };
@@ -77,7 +89,7 @@ const LoginModal = ({ loginModal, toggleLoginModal }) => {
                 flex justify-center items-center w-full'
                 >
                     <div className='overlay'>
-                        {/* onClick={toggleLoginModal} */}
+
                         <div
                             className='modal-content bg-orange bg-opacity-80 border border-darkest  rounded-lg p-4 drop-shadow-xl w-[300px] 
                         sm:w-[400px]
@@ -91,7 +103,9 @@ const LoginModal = ({ loginModal, toggleLoginModal }) => {
                                     Login
                                 </h1>
 
+                                {/* LOGIN FORM */}
                                 <form className='' onSubmit={handleFormSubmit}>
+                                    {/* takes the input array defined in hook section and maps them out into a form */}
                                     {inputs.map((input) => (
                                         <LoginInput
                                             key={input.id}
@@ -101,6 +115,8 @@ const LoginModal = ({ loginModal, toggleLoginModal }) => {
                                         />
                                     ))}
                                     <div className='flex flex-row justify-center'>
+
+                                        {/* Submit button */}
                                         <button
                                             className='mt-4 mx-auto text-center rounded-lg bg-hotpink text-navnametext font-bowlby text-cream  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                           xl:text-2xl'
@@ -109,6 +125,8 @@ const LoginModal = ({ loginModal, toggleLoginModal }) => {
                                         >
                                             Submit
                                         </button>
+
+                                        {/* Close button */}
                                         <button
                                             className='close-modal mt-4 mx-auto text-center rounded-lg bg-hotpink text-navnametext font-bowlby text-cream  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                        xl:text-2xl'
@@ -122,7 +140,6 @@ const LoginModal = ({ loginModal, toggleLoginModal }) => {
                         </div>
                     </div>
                 </div>
-                // </div>
             )}
         </div>
     );

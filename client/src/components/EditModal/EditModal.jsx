@@ -25,8 +25,6 @@ const EditModal = ({
     // --------------- EVENT VALUES AND INPUTS --------------- //
     function toDateTime(secs) {
         var t = new Date(parseInt(secs)); // Epoch
-        //t.setSeconds(parseInt(secs) / 1000);
-        //console.log(t.toISOString());
         return t.toISOString();
     }
     const [updateValues, setUpdateValues] = useState({
@@ -86,24 +84,29 @@ const EditModal = ({
 
     // --------------- CREATE EVENT METHODS --------------- //
 
+    // handle submit on click
     const handleSubmit = (e) => {
         e.preventDefault();
     };
 
+    // changes the values based on the inputs given
     const onChange = (e) => {
-        // console.log(e.target.value)
         setUpdateValues({ ...updateValues, [e.target.name]: e.target.value });
     };
+
+    // Update event
     const handleUpdatePost = async () => {
         try {
+            // gets token from local storage and makes it a variable if logged in, if not - null
             const token = Auth.loggedIn() ? Auth.getToken() : null;
+            // uses getProfile function from Auth to turn logged in user's info into useable data
             const userData = Auth.getProfile();
-            //console.log(Date(updateValues.time));
+
+            // if we get null from token return false
             if (!token) {
                 return false;
             }
-            //console.log('updateValues:', updateValues);
-            console.log(updateValues);
+
             const { data } = await post({
                 variables: {
                     postId: postId,
@@ -116,7 +119,6 @@ const EditModal = ({
                 },
             });
 
-            // console.log(data);
             if (source === 'admin') {
                 await client.refetchQueries({ include: [QUERY_ME] });
                 toggleModal();
@@ -131,7 +133,8 @@ const EditModal = ({
 
     return (
         <div className='flex w-full '>
-            {/* <div className='flex sm:hidden flex-row justify-between my-2'> */}
+
+            {/* Modal toggle */}
             <button
                 onClick={toggleModal}
                 style={{
@@ -143,8 +146,8 @@ const EditModal = ({
             >
                 Edit Post
             </button>
-            {/* </div> */}
 
+            {/* Modal */}
             {modal && (
                 <div
                     className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm
@@ -163,6 +166,8 @@ const EditModal = ({
                                 >
                                     Edit Post!
                                 </h1>
+
+                                {/* Input form that maps out inputs to create input component */}
                                 <form className='' onSubmit={handleSubmit}>
                                     {inputs.map((input) => (
                                         <EditInput
@@ -171,10 +176,11 @@ const EditModal = ({
                                             value={updateValues[input.value]}
                                             onChange={onChange}
                                             setUpdateTime={setUpdateTime}
-                                            //updateValues={updateValues}
                                         />
                                     ))}
                                     <div className='flex flex-row justify-center'>
+
+                                        {/* Submit button */}
                                         <button
                                             className='mt-4 mx-auto text-center rounded-lg bg-orange text-navnametext font-bowlby text-hotred  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                            xl:text-2xl'
@@ -182,6 +188,8 @@ const EditModal = ({
                                         >
                                             Submit
                                         </button>
+
+                                         {/* Close button */}
                                         <button
                                             className='close-modal mt-4 mx-auto text-center rounded-lg bg-orange text-navnametext font-bowlby text-hotred  w-[40%] sm:w-[25%] max-w-[180px] p-2 drop-shadow-md
                                                        xl:text-2xl'
