@@ -77,10 +77,10 @@ SO THAT that I can eat good food with fun people and not alone.
 
 ### __Links 🔗__
 
- <!-- TODO: Update -->
 
-- Live URL: []()
+- Live URL: [https://taste-buds.herokuapp.com/](https://taste-buds.herokuapp.com/)
 - Github Repository: [https://github.com/AveryCaldwell/TasteBuds](https://github.com/AveryCaldwell/TasteBuds)
+- Portfolio: [https://averycaldwell.github.io/React-Portfolio/](https://averycaldwell.github.io/React-Portfolio/)
 
 <br>
 <hr>
@@ -88,7 +88,6 @@ SO THAT that I can eat good food with fun people and not alone.
 
 ##  __My process 💡__
 
- <!-- TODO: Update -->
 ###  Built with 🔨
 - Tailwind
 - React, MERN stack
@@ -112,10 +111,10 @@ SO THAT that I can eat good food with fun people and not alone.
 ## __Author ✏️__
 
 
+- Avery Caldwell:  [GitHub](https://github.com/AveryCaldwell)
 - Colton Smith: [GitHub](https://github.com/coltonsmith135)
 - Chrissy Martin: [GitHub](https://github.com/chrissy-martin)
 - Spencer Carlson Smith: [GitHub](https://github.com/anomic84)
-- Avery Caldwell:  [GitHub](https://github.com/AveryCaldwell)
 
 
 <br>
