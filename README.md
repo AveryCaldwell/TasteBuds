@@ -1,4 +1,4 @@
-# __TasteBuds 📚__
+# __TasteBuds 🫕__
 
 ## __Description 📑__
  
