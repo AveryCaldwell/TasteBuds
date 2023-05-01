@@ -1,5 +1,7 @@
 # __TasteBuds 🫕__
 
+<br> 
+
 ## __Description 📑__
  
 A social media app that allows users to never dine alone again! This app allows the user to create a profile, see other users posts, create posts, and join other events!
