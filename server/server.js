@@ -30,6 +30,8 @@ if (process.env.NODE_ENV === 'production') {
 // app.get('/', (req, res) => {
 //     res.sendFile(path.join(__dirname, '../client/build/index.html'));
 // });
+
+// work around to deploy to heroku
 app.get('*', (req, res) => {
     let url = path.join(__dirname, '../client/build', 'index.html');
     if (!url.startsWith('/app/'))

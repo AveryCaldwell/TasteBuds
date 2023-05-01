@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Admin, Listings, Home } from './pages';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import Footer from './components/Footer';
