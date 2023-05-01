@@ -2,7 +2,7 @@
 
 ## __Description 📑__
  
- A fully functioning app
+A social media app that allows users to never dine alone again! This app allows the user to create a profile, see other users posts, create posts, and join other events!
 
 <br>
 <hr>
@@ -29,7 +29,7 @@
 
 ## User Story
 
- <!-- TODO: Update -->
+ 
 ```md
 
 AS AN avid foodie, but also a recluse, 
