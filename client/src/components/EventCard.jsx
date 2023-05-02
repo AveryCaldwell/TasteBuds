@@ -268,7 +268,7 @@ const EventCard = ({
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
-//    delete post query mutator
+    //    delete post query mutator
     const [deletePost] = useMutation(DELETE_POST, {
         refetchQueries: [{ query: QUERY_ME }],
     });
@@ -279,7 +279,7 @@ const EventCard = ({
         return t.toLocaleString();
     }
 
-     // DELETE POST
+    // DELETE POST
     const handleDelete = async (postId) => {
         // console.log(postId);
         if (!postId) {
@@ -305,7 +305,7 @@ const EventCard = ({
         >
             {/* ------------  TABLETS AND UP ------------ */}
             <div
-                className='hidden w-[90%] sm:flex flex-col font-manrope p-4 
+                className='hidden sm:flex flex-col font-manrope p-4 min-w-[300px]
                 sm:w-full 
                 md:max-w-[600px] md:rounded-3xl md:m-4
                 lg:max-w-[800px]
@@ -390,7 +390,7 @@ const EventCard = ({
                         </button>
 
                         {/* FUTURE DEVELOPMENT - LIKE BUTTON */}
-                        
+
                         {/* <div className='flex flex-row items-center justify-center gap-2 mt-4 ml-4 w-[22.5%] rounded bg-darkblue py-1 drop-shadow-md'>
                             <FaCheckSquare
                                 className=' text-hotpink'
@@ -450,52 +450,55 @@ const EventCard = ({
 
             {/* ------------  MOBILE ------------ */}
             {/* FIXME - match desktop styling */}
-            <div className='flex flex-col mx-auto'>
+            <div className='flex flex-col mx-auto min-w-[350px]
+            sm:min-w-[630px]
+            md:min-w-[758px]
+            lg:min-w-[1014px]
+            xl:min-w-[1190px]
+            2xl:min-w-[1526px]'>
                 {/* <div className='flex flex-row'> */}
                 <div className='w-[90%] flex sm:hidden flex-col font-manrope p-4 mx-auto'>
-                    <div className='bg-orange text-pink rounded-lg p-3'>
+                    <div className='bg-cream bg-opacity-90  rounded-lg p-5 drop-shadow-lg'>
                         <h1
-                            className='text-lg font-bold text-darkest 
-                           lg:text-xl
-                           xl:text-3xl'
+                            className='text-lg font-bold text-hotred
+                            lg:text-xl
+                            xl:text-2xl'
                         >
                             {title}
                         </h1>
                         <div className='w-[90%] flex flex-col mx-auto'>
                             <p
-                                className='text-[10px] text-maroon
+                                className='text-[10px] text-pink
                           lg:text-sm
                           xl:text-lg'
                             >
                                 Created by {username}
                             </p>
                             <p
-                                className='w-full mx-auto py-2 text-sm text-darkest
-                          lg:text-lg lg:py-4
-                          xl:text-2xl'
+                                className='w-full mx-auto py-2 text-sm text-hotrod'
                             >
                                 {description}
                             </p>
                             <p
-                                className='text-right text-[10px] text-maroon
+                                className='text-right text-[10px] text-hotrod
                         lg:text-sm
                         xl:text-base'
                             >
                                 Reservation for {buddies}
                             </p>
                             <p
-                                className='text-right text-[10px] text-maroon
+                                className='text-right text-[10px] text-coral
                           lg:text-sm
                           xl:text-lg'
                             >
                                 {location}
                             </p>
                             <p
-                                className='text-right text-[10px] text-maroon
+                                className='text-right text-[10px] text-coral
                           lg:text-sm
                           xl:text-lg'
                             >
-                                {time}
+                                {toDateTime(time)}
                             </p>
                         </div>
                     </div>
